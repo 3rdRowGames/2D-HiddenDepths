@@ -34,21 +34,24 @@ public class MouseFollow : MonoBehaviour
     void Update()
     {
 
-        faceMouse();
+
 
         mousePosition = Input.mousePosition;
         mousePosition = Camera.main.ScreenToWorldPoint(mousePosition);
-        position = Vector2.Lerp(transform.position, mousePosition, moveSpeed * Time.deltaTime);
+        position = Vector2.Lerp(transform.position, mousePosition, moveSpeed); // * Time.deltaTime); 
 
         //Clamp Player Position to a Fixed Playable Area
         transform.position = new Vector3(Mathf.Clamp(transform.position.x, -17f, 17f), Mathf.Clamp(transform.position.y, -8f, 5f), transform.position.z);
 
 
     }
+
     private void FixedUpdate()
     {
 
         rb.MovePosition(position);
+        faceMouse();
+
         //transform.Rotate(mousePosition);
         //    
     }
@@ -68,7 +71,7 @@ public class MouseFollow : MonoBehaviour
         if (Input.GetMouseButton(0))
         {
             transform.up = -direction;
-            moveSpeed = 4f; //.025f;
+            moveSpeed = .025f; //12f;
             canAttack = true;
 
         }
@@ -76,7 +79,7 @@ public class MouseFollow : MonoBehaviour
         else
         {
             transform.up = direction;
-            moveSpeed = 8f; //.05f;
+            moveSpeed = .05f; //15f;
             canAttack = false;
         }
     }
