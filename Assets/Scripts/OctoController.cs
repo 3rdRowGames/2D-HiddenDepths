@@ -7,10 +7,14 @@ using TMPro;
 public class OctoController : MonoBehaviour
 {
     public GameObject deathWindow;
+    public GameObject playerHud;
 
     //Octopus Stats
     public bool isHungry;
     public float hungerStat;
+
+    public Animator anim;
+    public ParticleSystem inkParticle;
 
     MouseFollow mouseFollow;
     Shark shark;
@@ -18,12 +22,18 @@ public class OctoController : MonoBehaviour
     public float maxHungerTimer;
     public float hungerTimer;
     public float hungerDecayRate;
-    public float inkDecayRate;
+    public float inkRegenRate;
     public bool isDead = false;
 
     public TMP_Text timerText;
     public float gameTimer;
     float timer;
+
+    public TMP_Text scoreText;
+    public TMP_Text deathScreenScoreText;
+
+    public float gameScore;
+    float scoreMultiplier;
 
     public float inkStat;
 
@@ -41,6 +51,8 @@ public class OctoController : MonoBehaviour
         mouseFollow = GetComponent<MouseFollow>();
         shark = GetComponent<Shark>();
         timer = gameTimer;
+
+        scoreMultiplier = gameScore;
     }
 
 
@@ -55,7 +67,11 @@ public class OctoController : MonoBehaviour
         //Timer
         timer -= 1 * Time.deltaTime;
         var time = (int)timer;
-        timerText.text = time.ToString();
+        timerText.SetText(time.ToString());
+
+        //ScoreText
+        scoreText.SetText(gameScore.ToString());
+        deathScreenScoreText.SetText(gameScore.ToString());
 
         if (timer <= 0)
         {
@@ -91,18 +107,23 @@ public class OctoController : MonoBehaviour
                     {
                         hungerStat++;
                         inkStat++;
+
+                        timer = timer + 1;
+
+                        gameScore = gameScore + 10;
                     }
                 }
                 else
                 {
+                    timer = timer - 5;
                     //bad Stuff
 
                 }            
 
                 hungerTimer++;
                 fish.Death();
+                anim.SetBool("Attack", true);
             }
-
         }
     }
 
@@ -141,9 +162,11 @@ public class OctoController : MonoBehaviour
 
     public void InkAbility()
     {
-        if (Input.GetMouseButtonDown(1) && inkStat >= 25)
+        if (Input.GetMouseButtonDown(1) && inkStat >= 100)
         {
-            inkStat = inkStat - 25;
+            inkStat = inkStat - 100;
+            anim.SetTrigger("InkAbility");
+            Instantiate(inkParticle, transform.position, Quaternion.identity);
         }
 
         //Setting Ink back to 100
@@ -154,7 +177,7 @@ public class OctoController : MonoBehaviour
 
         if (inkStat >= 0)
         {
-            inkStat += inkDecayRate * Time.deltaTime;
+            inkStat += inkRegenRate * Time.deltaTime;
         }
 
         inkBarSlider.value = inkStat;
@@ -166,6 +189,7 @@ public class OctoController : MonoBehaviour
         if (isDead)
         {
             deathWindow.SetActive(true);
+            playerHud.SetActive(false);
             Time.timeScale = 0.1f;
 
 

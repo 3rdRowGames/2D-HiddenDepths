@@ -9,18 +9,22 @@ public class Shark : Fish
     public Rigidbody2D rb;
     public Vector2 movement;
 
+    public bool isStunned;
+
     public override void Update()
     {
 
         if (player != null)
         {
-            SharkLogic();
-            base.Update();
+           SharkLogic();
+           base.Update();   
+            
         }
     }
 
     private void FixedUpdate()
     {
+        if(!isStunned)
         MoveCharacter(movement);
     }
 
@@ -40,5 +44,22 @@ public class Shark : Fish
     private void MoveCharacter(Vector2 direction)
     {
         rb.MovePosition((Vector2)transform.position + (direction * moveSpeed * Time.deltaTime));
+    }
+
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        if (collision.gameObject.tag == "Ink")
+        {
+            speed = 1;
+            moveSpeed = 1;
+            isStunned = true;
+        }
+
+        else
+        {
+            isStunned = false;
+            moveSpeed = 10;
+            speed = 10;
+        }
     }
 }

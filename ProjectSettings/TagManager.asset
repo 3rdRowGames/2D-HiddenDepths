@@ -8,6 +8,7 @@ TagManager:
   - Right Collider
   - Fish
   - Shark
+  - Ink
   layers:
   - Default
   - TransparentFX

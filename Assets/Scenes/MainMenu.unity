@@ -3114,7 +3114,7 @@ GameObject:
   - component: {fileID: 1138562464}
   - component: {fileID: 1138562463}
   m_Layer: 5
-  m_Name: MFGJ
+  m_Name: Software
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3159,7 +3159,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: A MFGJ Submission
+  m_text: Software
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -3383,7 +3383,7 @@ GameObject:
   - component: {fileID: 1196926105}
   - component: {fileID: 1196926104}
   m_Layer: 5
-  m_Name: 3rd Row
+  m_Name: Fmod Credit Line
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3428,7 +3428,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Made by 3rd Row
+  m_text: 'Audio Engine: FMOD Studio by Firelight Technologies Pty Ltd.'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -4433,6 +4433,105 @@ MonoBehaviour:
   - {fileID: -4638391359293680325, guid: 210b6f7d982e3b642b4609fdbc632492, type: 3}
   spawnOutset: 18
   goodFishPercent: 80
+  names:
+  - Angela
+  - Amy
+  - Anna
+  - Alison
+  - Adam
+  - Alex
+  - Anthony
+  - Alistair
+  - Alfred
+  - Alexa
+  - Ainsley
+  - Beth
+  - Bonnie
+  - Bailey
+  - Beuford
+  - Barbara
+  - Bernard
+  - Bill
+  - Bryce
+  - Belle
+  - Barrie
+  - Carol
+  - Candice
+  - Cindy
+  - Cole
+  - Charles
+  - Chris
+  - Chance
+  - Caleb
+  - Caddie
+  - Caitlyn
+  - Connor
+  - Carl
+  - Conrad
+  - Donna
+  - Deborah
+  - Doug
+  - Don
+  - Dwight
+  - Dexter
+  - Daphne
+  - Elaine
+  - Emily
+  - Edward
+  - Eric
+  - Ethan
+  - Farrah
+  - Fred
+  - Frank
+  - Fran
+  - Gina
+  - George
+  - Gerald
+  - Heather
+  - Harold
+  - Hank
+  - Isabelle
+  - Ian
+  - Igor
+  - Jolene
+  - Jake
+  - James
+  - Jackson
+  - Jesse
+  - John
+  - Jack
+  - Janet
+  - Katherine
+  - Karl
+  - Keon
+  - Kevan
+  - Keanu
+  - Konrad
+  - Laura
+  - Lewis
+  - Larry
+  - Lauren
+  - Lawrence
+  - Mary
+  - Matt
+  - Martin
+  - Melvin
+  - Maebel
+  - Maddox
+  - Meagen
+  - Magda
+  - Marvin
+  - Mitch
+  - Micah
+  - Mia
+  - Mark
+  - Micheal
+  - Olivea
+  - Oliver
+  - Oslo
+  - Piper
+  - Phillip
+  - Paul
 --- !u!4 &1691981367
 Transform:
   m_ObjectHideFlags: 0
