@@ -55,11 +55,25 @@ public class Shark : Fish
             isStunned = true;
         }
 
-        else
+        if (collision.gameObject.tag == "Player")
+        {
+            anim.SetBool("isAttacking", true);
+        }
+    }
+
+    public void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.gameObject.tag == "Player")
+        {
+            anim.SetBool("isAttacking", false);
+        }
+
+        if (collision.gameObject.tag == "Ink")
         {
             isStunned = false;
-            moveSpeed = 10;
-            speed = 10;
+            /*            moveSpeed = 10;
+                        speed = 10;*/
+            Debug.Log("SpeedValue from Shark Script " + speed);
         }
     }
 }

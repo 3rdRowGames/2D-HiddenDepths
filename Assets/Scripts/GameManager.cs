@@ -58,6 +58,7 @@ public class GameManager : MonoBehaviour
         f.toEat = (Random.Range(1, 100) <= goodFishPercent) ? true : false;
         f.GetComponent<SpriteRenderer>().sprite = ((f.toEat)) ? goodFishSprites[Random.Range(0, goodFishSprites.Count)] : badFishSprite;
         fishInGame.Add(f);
+
     }
 
     /*    public Sprite GetSprite(string name)

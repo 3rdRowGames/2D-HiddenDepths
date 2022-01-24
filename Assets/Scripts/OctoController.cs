@@ -36,6 +36,7 @@ public class OctoController : MonoBehaviour
     float scoreMultiplier;
 
     public float inkStat;
+    public float sharkSpeed;
 
     public float damageStat;
 
@@ -49,10 +50,11 @@ public class OctoController : MonoBehaviour
     private void Start()
     {
         mouseFollow = GetComponent<MouseFollow>();
-        shark = GetComponent<Shark>();
+        shark = FindObjectOfType<Shark>();
+        
         timer = gameTimer;
 
-        scoreMultiplier = gameScore;
+        
     }
 
 
@@ -78,14 +80,12 @@ public class OctoController : MonoBehaviour
             isDead = true;
             timer = 0;
         }
-
-            
     }
 
     private void OnTriggerStay2D(Collider2D collision)
     {
 
-        if ((collision.gameObject.tag == "Shark"))
+        if (collision.gameObject.tag == "Shark")
         {
             Damage();
             if (hungerStat == 0)
@@ -95,7 +95,7 @@ public class OctoController : MonoBehaviour
 
         }
 
-        if ((collision.gameObject.tag == "Fish"))
+        if (collision.gameObject.tag == "Fish")
         {
             if (mouseFollow.canAttack)
             {
@@ -107,15 +107,15 @@ public class OctoController : MonoBehaviour
                     {
                         hungerStat++;
                         inkStat++;
-
-                        timer = timer + 1;
-
-                        gameScore = gameScore + 10;
+                        timer++;
+                        gameScore += 10;
+                        shark.speed = gameScore * 0.02f; //Shark Speed starts at .02 and slowly goes up by .02
+                        //Debug.Log(shark.speed);
                     }
                 }
                 else
                 {
-                    timer = timer - 5;
+                    timer -= 5;
                     //bad Stuff
 
                 }            
