@@ -8,6 +8,7 @@ public class Shark : Fish
     public float moveSpeed = 5f;
     public Rigidbody2D rb;
     public Vector2 movement;
+    public Animator anim;
 
     public bool isStunned;
 

@@ -14,7 +14,7 @@ public class Fish : MonoBehaviour
     public bool toEat;
     public GameObject fishNameCanvas;
     public TMP_Text fishNameText;
-    public Animator anim;
+    
 
     
 

@@ -7,7 +7,8 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
-    public Fish fish;
+    public List<Fish> fish;
+    public Fish badFish;
     public List<Fish> fishInGame;
     public float spawnTimer;
     public float currentTimer;
@@ -51,29 +52,16 @@ public class GameManager : MonoBehaviour
 
     public void SpawnFish(bool right)
     {
-        Fish f = Instantiate(fish, new Vector3((right) ? spawnOutset : -spawnOutset, Random.Range(-5f, 1.5f), 0), (right) ? Quaternion.Euler(0f, 180f, 0f) : Quaternion.identity);
+        bool makeAGoodFish = (Random.Range(1, 100) <= goodFishPercent) ? true : false;
+        
+        Fish f = (makeAGoodFish)?Instantiate(fish[Random.Range(0,fish.Count)], new Vector3((right) ? spawnOutset : -spawnOutset, Random.Range(-5f, 1.5f), 0), (right) ? Quaternion.Euler(0f, 180f, 0f) : Quaternion.identity): Instantiate(badFish, new Vector3((right) ? spawnOutset : -spawnOutset, Random.Range(-5f, 1.5f), 0), (right) ? Quaternion.Euler(0f, 180f, 0f) : Quaternion.identity);
+        f.toEat = makeAGoodFish;
         f.animalName = names[Random.Range(0, names.Count)];
         f.rightSide = right;
         f.Size(Random.Range(.4f, 1.7f));
-        f.toEat = (Random.Range(1, 100) <= goodFishPercent) ? true : false;
-        f.GetComponent<SpriteRenderer>().sprite = ((f.toEat)) ? goodFishSprites[Random.Range(0, goodFishSprites.Count)] : badFishSprite;
         fishInGame.Add(f);
 
     }
-
-    /*    public Sprite GetSprite(string name)
-        {
-            for (int i = 0; i < fishSprites.Count; i++)
-            {
-                if (fishSprites[i].name == name)
-                {
-                    return fishSprites[i];
-                    // got your sprite
-                }
-            }
-            return null;
-        }*/
-
 
 
     public void RestartGame()
