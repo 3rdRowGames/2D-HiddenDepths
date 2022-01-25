@@ -72,10 +72,7 @@ public class Shark : Fish
 
         if (collision.gameObject.tag == "Ink")
         {
-            isStunned = false;
-            /*            moveSpeed = 10;
-                        speed = 10;*/
-            Debug.Log("SpeedValue from Shark Script " + speed);
+           isStunned=false;
         }
     }
 }

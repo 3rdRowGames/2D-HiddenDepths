@@ -107,9 +107,20 @@ public class OctoController : MonoBehaviour
             SoundManager.instance.sound.PlayOneShot(SoundManager.instance.ink);
             Instantiate(inkParticle, transform.position, Quaternion.identity);
         }
+
+        if (gameScore >= 500 && inkStat <= 10)
+        {
+            inkStat += inkRegenRate + 0.1f * Time.deltaTime;
+        }
         //Setting Ink back to 100
-        if (inkStat<=0) inkStat += inkRegenRate * Time.deltaTime;
-        inkBarSlider.value = (inkStat >= 0)?100:inkStat;
+        /* if (inkStat<=0) inkStat += inkRegenRate * Time.deltaTime;
+         inkBarSlider.value = (inkStat >= 0) ? 100 : inkStat;
+         inkBarSlider.value = inkStat;*/
+        if (inkStat >= 0)
+        {
+            inkStat += inkRegenRate * Time.deltaTime;
+        }
+
         inkBarSlider.value = inkStat;
     }
 
@@ -129,4 +140,6 @@ public class OctoController : MonoBehaviour
         if (health <= 0) Death();
         else healthBarSlider.value = health;
     }
+
+    
 }
