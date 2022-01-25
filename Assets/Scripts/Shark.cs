@@ -47,7 +47,7 @@ public class Shark : Fish
         rb.MovePosition((Vector2)transform.position + (direction * moveSpeed * Time.deltaTime));
     }
 
-    private void OnTriggerStay2D(Collider2D collision)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.tag == "Ink")
         {
@@ -59,6 +59,7 @@ public class Shark : Fish
         if (collision.gameObject.tag == "Player")
         {
             anim.SetBool("isAttacking", true);
+            SoundManager.instance.sound.PlayOneShot(SoundManager.instance.sharkBite);
         }
     }
 

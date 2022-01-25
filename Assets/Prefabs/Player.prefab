@@ -163,16 +163,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   deathWindow: {fileID: 0}
-  isHungry: 0
-  hungerStat: 100
-  maxHungerTimer: 0.5
-  hungerTimer: 1
-  hungerDecayRate: 1
-  inkDecayRate: 1
-  isDead: 0
+  playerHud: {fileID: 0}
+  health: 100
+  anim: {fileID: 0}
+  inkParticle: {fileID: 0}
+  inkRegenRate: 0
   timerText: {fileID: 0}
   gameTimer: 60
+  scoreText: {fileID: 0}
+  deathScreenScoreText: {fileID: 0}
+  gameScore: 0
   inkStat: 100
+  sharkSpeed: 0
+  damageStat: 0
   healthBarSlider: {fileID: 0}
   inkBarSlider: {fileID: 0}
   ScaleWhenEating: {x: 0.1, y: 0.1, z: 0}

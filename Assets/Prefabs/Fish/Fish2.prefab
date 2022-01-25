@@ -124,8 +124,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 1
-  m_fontSizeBase: 1
+  m_fontSize: 0.5
+  m_fontSizeBase: 0.5
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -288,7 +288,7 @@ MonoBehaviour:
   size: 0
   rightSide: 0
   target: {fileID: 89400319822490098}
-  speed: 2
+  speed: 3
   animalName: 
   toEat: 0
   fishNameCanvas: {fileID: 6817202748138585887}

@@ -4421,7 +4421,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bf472dfa998ac5b4eb2d1b3b2dcd6ebc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fish: {fileID: 1898776439877122919, guid: 8981a2f3bd6011f46aa1095dfbfb79bc, type: 3}
+  fish:
+  - {fileID: -3854339403067507594, guid: 7bfa1b10f68853745a782c7bf638af56, type: 3}
+  - {fileID: 3065188039541847855, guid: 8ce3ae6dedf0f9245bd7e9e9be3f1dba, type: 3}
+  - {fileID: 4730864377507060321, guid: eb29e2d4a068ac5449bfb8efa150c217, type: 3}
+  badFish: {fileID: -1877078332562077174, guid: ac7f005d849a6d64c8930accc04385fc, type: 3}
   fishInGame: []
   spawnTimer: 1
   currentTimer: 0

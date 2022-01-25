@@ -10,8 +10,7 @@ public class OctoController : MonoBehaviour
     public GameObject playerHud;
 
     //Octopus Stats
-    public bool isHungry;
-    public float hungerStat;
+    public float health;
 
     public Animator anim;
     public ParticleSystem inkParticle;
@@ -19,11 +18,7 @@ public class OctoController : MonoBehaviour
     MouseFollow mouseFollow;
     Shark shark;
 
-    public float maxHungerTimer;
-    public float hungerTimer;
-    public float hungerDecayRate;
     public float inkRegenRate;
-    public bool isDead = false;
 
     public TMP_Text timerText;
     public float gameTimer;
@@ -33,7 +28,6 @@ public class OctoController : MonoBehaviour
     public TMP_Text deathScreenScoreText;
 
     public float gameScore;
-    float scoreMultiplier;
 
     public float inkStat;
     public float sharkSpeed;
@@ -51,10 +45,8 @@ public class OctoController : MonoBehaviour
     {
         mouseFollow = GetComponent<MouseFollow>();
         shark = FindObjectOfType<Shark>();
-        
+        Time.timeScale = 1f;
         timer = gameTimer;
-
-        
     }
 
 
@@ -62,8 +54,6 @@ public class OctoController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        CheckHunger();
-        Dead();
         InkAbility();
 
         //Timer
@@ -75,138 +65,68 @@ public class OctoController : MonoBehaviour
         scoreText.SetText(gameScore.ToString());
         deathScreenScoreText.SetText(gameScore.ToString());
 
-        if (timer <= 0)
-        {
-            isDead = true;
-            timer = 0;
-        }
+        if (timer <= 0) Death();
     }
 
     private void OnTriggerStay2D(Collider2D collision)
     {
 
-        if (collision.gameObject.tag == "Shark")
-        {
-            Damage();
-            if (hungerStat == 0)
-            {
-                isDead = true;
-            }
-
-        }
+        if (collision.gameObject.tag == "Shark") Damage();
 
         if (collision.gameObject.tag == "Fish")
         {
             if (mouseFollow.canAttack)
             {
+                SoundManager.instance.sound.PlayOneShot(SoundManager.instance.squidBite);
                 Fish fish = collision.GetComponent<Fish>();
                 if (fish.toEat)
                 {
-                    //good stuff
-                    if (isHungry)
-                    {
-                        hungerStat++;
-                        inkStat++;
-                        timer++;
-                        gameScore += 10;
-                        shark.speed = gameScore * 0.02f; //Shark Speed starts at .02 and slowly goes up by .02
-                        //Debug.Log(shark.speed);
-                    }
+                    inkStat++;
+                    timer++;
+                    gameScore += 10;
+                    shark.speed = gameScore * 0.02f; //Shark Speed starts at .02 and slowly goes up by .02
                 }
                 else
                 {
                     timer -= 5;
                     //bad Stuff
 
-                }            
-
-                hungerTimer++;
+                }
                 fish.Death();
                 anim.SetBool("Attack", true);
             }
         }
     }
-
-    public void CheckHunger()
-    {
-        healthBarSlider.value = hungerStat;
-        if (hungerStat >= 0)
-        {
-            isHungry = true;
-        }
-
-        if (hungerStat >= 100)
-        {
-            hungerStat = 100;
-            isHungry = false;
-        }
-
-        if (hungerStat <= 0)
-        {
-            Destroy(gameObject);
-            isDead = true;
-        }
-
-        hungerTimer -= hungerDecayRate * Time.deltaTime;
-        if (hungerTimer >= maxHungerTimer)
-        {
-            hungerTimer = maxHungerTimer;
-        }
-        if (hungerTimer <= 0)
-        {
-            hungerStat -= hungerDecayRate * Time.deltaTime;
-            hungerTimer = 0;
-        }
-            
-    }
-
+    
     public void InkAbility()
     {
         if (Input.GetMouseButtonDown(1) && inkStat >= 100)
         {
-            inkStat = inkStat - 100;
+            inkStat = 0;
             anim.SetTrigger("InkAbility");
+            SoundManager.instance.sound.PlayOneShot(SoundManager.instance.ink);
             Instantiate(inkParticle, transform.position, Quaternion.identity);
         }
-
         //Setting Ink back to 100
-        if (inkStat >= 100)
-        {
-            inkStat = 100;
-        }
-
-        if (inkStat >= 0)
-        {
-            inkStat += inkRegenRate * Time.deltaTime;
-        }
-
+        if (inkStat<=0) inkStat += inkRegenRate * Time.deltaTime;
+        inkBarSlider.value = (inkStat >= 0)?100:inkStat;
         inkBarSlider.value = inkStat;
     }
 
 
-    public void Dead()
+    public void Death()
     {
-        if (isDead)
-        {
-            deathWindow.SetActive(true);
-            playerHud.SetActive(false);
-            Time.timeScale = 0.1f;
-
-
-            Destroy(gameObject);
-        }
-
-        else
-        {
-            Time.timeScale = 1;
-            isDead = false;
-        } 
-        
+        deathWindow.SetActive(true);
+        playerHud.SetActive(false);
+        Time.timeScale = 0.1f;
+        SoundManager.instance.sound.PlayOneShot(SoundManager.instance.death);
+        Destroy(gameObject);
     }
 
     public void Damage()
     {
-        hungerStat = hungerStat - damageStat * Time.deltaTime;
+        health -= damageStat * Time.deltaTime;
+        if (health <= 0) Death();
+        else healthBarSlider.value = health;
     }
-
 }
