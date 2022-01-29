@@ -5,22 +5,13 @@ using UnityEngine;
 public class Ink : MonoBehaviour
 {
     public float inkTimer;
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
     void Update()
     {
         inkTimer -= 1 * Time.deltaTime;
-
-
-        if (inkTimer <= 0)
-        {
-            Destroy(gameObject);
-        }
-
+        if (inkTimer <= 0) Destroy(gameObject);
+    }
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.tag == "Shark") Shark.instance.stun = 2f;
     }
 }

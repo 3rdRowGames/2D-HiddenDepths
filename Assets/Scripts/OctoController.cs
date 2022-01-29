@@ -15,9 +15,7 @@ public class OctoController : MonoBehaviour
     public Animator anim;
     public ParticleSystem inkParticle;
 
-    MouseFollow mouseFollow;
-    Shark shark;
-
+    MouseFollow mouseFollow; 
     public float inkRegenRate;
 
     public TMP_Text timerText;
@@ -25,14 +23,9 @@ public class OctoController : MonoBehaviour
     float timer;
 
     public TMP_Text scoreText;
-    public TMP_Text deathScreenScoreText;
-
-    public float gameScore;
+    public TMP_Text deathScreenScoreText;    
 
     public float inkStat;
-    public float sharkSpeed;
-
-    public float damageStat;
 
     public Slider healthBarSlider;
     public Slider inkBarSlider;
@@ -44,14 +37,11 @@ public class OctoController : MonoBehaviour
     private void Start()
     {
         mouseFollow = GetComponent<MouseFollow>();
-        shark = FindObjectOfType<Shark>();
         Time.timeScale = 1f;
         timer = gameTimer;
+        Shark.instance.player = this;
     }
 
-
-
-    // Update is called once per frame
     void Update()
     {
         InkAbility();
@@ -62,8 +52,8 @@ public class OctoController : MonoBehaviour
         timerText.SetText(time.ToString());
 
         //ScoreText
-        scoreText.SetText(gameScore.ToString());
-        deathScreenScoreText.SetText(gameScore.ToString());
+        scoreText.SetText(GameManager.instance.gameScore.ToString());
+        deathScreenScoreText.SetText(GameManager.instance.gameScore.ToString());
 
         if (timer <= 0) Death();
     }
@@ -71,27 +61,17 @@ public class OctoController : MonoBehaviour
     private void OnTriggerStay2D(Collider2D collision)
     {
 
-        if (collision.gameObject.tag == "Shark") Damage();
-
+        if (collision.gameObject.tag == "Shark") Health(-Shark.instance.biteDamage);
         if (collision.gameObject.tag == "Fish")
-        {
+        {            
             if (mouseFollow.canAttack)
             {
                 SoundManager.instance.sound.PlayOneShot(SoundManager.instance.squidBite);
                 Fish fish = collision.GetComponent<Fish>();
-                if (fish.toEat)
-                {
-                    inkStat++;
-                    timer++;
-                    gameScore += 10;
-                    shark.speed = gameScore * 0.02f; //Shark Speed starts at .02 and slowly goes up by .02
-                }
-                else
-                {
-                    timer -= 5;
-                    //bad Stuff
-
-                }
+                inkStat++;
+                timer++;
+                Health(10);
+                GameManager.instance.gameScore += 10; 
                 fish.Death();
                 anim.SetBool("Attack", true);
             }
@@ -107,23 +87,9 @@ public class OctoController : MonoBehaviour
             SoundManager.instance.sound.PlayOneShot(SoundManager.instance.ink);
             Instantiate(inkParticle, transform.position, Quaternion.identity);
         }
-
-        if (gameScore >= 500 && inkStat <= 10)
-        {
-            inkStat += inkRegenRate + 0.1f * Time.deltaTime;
-        }
-        //Setting Ink back to 100
-        /* if (inkStat<=0) inkStat += inkRegenRate * Time.deltaTime;
-         inkBarSlider.value = (inkStat >= 0) ? 100 : inkStat;
-         inkBarSlider.value = inkStat;*/
-        if (inkStat >= 0)
-        {
-            inkStat += inkRegenRate * Time.deltaTime;
-        }
-
+        if (inkStat < 100) inkStat += (GameManager.instance.gameScore >= 500 && inkStat <= 10) ? inkStat += (inkRegenRate + 0.1f) * Time.deltaTime: inkRegenRate * Time.deltaTime;
         inkBarSlider.value = inkStat;
     }
-
 
     public void Death()
     {
@@ -134,12 +100,11 @@ public class OctoController : MonoBehaviour
         Destroy(gameObject);
     }
 
-    public void Damage()
+    public void Health(float value)
     {
-        health -= damageStat * Time.deltaTime;
+        Debug.Log(value);
+        health = (health + value>=100)?100:(health+value<=0)?0:health+value;
         if (health <= 0) Death();
         else healthBarSlider.value = health;
-    }
-
-    
+    }    
 }

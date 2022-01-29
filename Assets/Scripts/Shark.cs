@@ -2,77 +2,53 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Shark : Fish
+public class Shark:MonoBehaviour
 {
-    public Transform player;
-    public float moveSpeed = 5f;
-    public Rigidbody2D rb;
-    public Vector2 movement;
-    public Animator anim;
+    public static Shark instance;
+    internal Animator anim;
+    public float sharkSpeed;
+    internal float speed;
+    internal float stun;
+    internal OctoController player;
+    internal Transform bite;
+    internal float biteDistance;
+    internal float biteDamage;
+    internal float biteCounterMax;
+    internal float biteCounter;
 
-    public bool isStunned;
-
-    public override void Update()
+    private void Awake()
     {
+        instance = this;
+        anim = GetComponent<Animator>();
+        bite = GetComponentInChildren<Transform>();        
+    }
 
+    public void Update()
+    {
         if (player != null)
-        {
-           SharkLogic();
-           base.Update();   
-            
-        }
-    }
-
-    private void FixedUpdate()
-    {
-        if(!isStunned)
-        MoveCharacter(movement);
-    }
-
-    public void SharkLogic()
-    {
-        Vector3 direction = player.position - transform.position;
-        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-
-        rb.rotation = angle;
-        direction.Normalize();
-        movement = direction;
-
-        //Clamp Sharks Position to a Fixed Playable Area
-        transform.position = new Vector3(Mathf.Clamp(transform.position.x, -16f, 16f), Mathf.Clamp(transform.position.y, -8f, 5f), transform.position.z);
-    }
-
-    private void MoveCharacter(Vector2 direction)
-    {
-        rb.MovePosition((Vector2)transform.position + (direction * moveSpeed * Time.deltaTime));
-    }
-
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.gameObject.tag == "Ink")
-        {
-            speed = 1;
-            moveSpeed = 1;
-            isStunned = true;
-        }
-
-        if (collision.gameObject.tag == "Player")
-        {
-            anim.SetBool("isAttacking", true);
-            SoundManager.instance.sound.PlayOneShot(SoundManager.instance.sharkBite);
-        }
-    }
-
-    public void OnTriggerExit2D(Collider2D collision)
-    {
-        if (collision.gameObject.tag == "Player")
-        {
-            anim.SetBool("isAttacking", false);
-        }
-
-        if (collision.gameObject.tag == "Ink")
-        {
-           isStunned=false;
+        {            
+            //Turn Shark to player
+            transform.rotation = (player.transform.position.x < transform.position.x) ? Quaternion.Euler(0f, 180f, 0f) : Quaternion.Euler(0f, 0f, 0f);
+            //Increase Max Speed
+            if (GameManager.instance.sharkFasterWhenEating) sharkSpeed = 2 + .02f * GameManager.instance.gameScore;
+            else sharkSpeed += .15f * Time.deltaTime;
+            //Get Current Speed
+            speed = (stun >= 0) ? 1 : sharkSpeed;
+            //Lower stun Timer in needed
+            if (stun >= 0) stun -= Time.deltaTime;           
+            //Move Shark
+            transform.position = Vector3.MoveTowards(transform.position, player.transform.position, speed * Time.deltaTime);
+            //Biting
+            if (biteCounter > 0) biteCounter -= Time.deltaTime;
+            if (Vector3.Distance(player.transform.position, bite.transform.position)<=biteDistance)
+            {
+                if(biteCounter <= 0)
+                { 
+                    anim.SetTrigger("isAttacking");
+                    SoundManager.instance.sound.PlayOneShot(SoundManager.instance.sharkBite);
+                    biteCounter = biteCounterMax;
+                }                
+            }
         }
     }
 }

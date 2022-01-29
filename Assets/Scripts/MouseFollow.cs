@@ -12,7 +12,6 @@ public class MouseFollow : MonoBehaviour
     public bool canAttack; //Checking if the player can attack 
 
 
-    private GameObject Player;
     Vector3 mousePosition;
     [SerializeField]
     public float moveSpeed; // = 0.1f;
@@ -73,7 +72,7 @@ public class MouseFollow : MonoBehaviour
             transform.up = -direction;
             moveSpeed = .025f; //12f;
             canAttack = true;
-
+            
         }
         //Octopus follows the mouse leading with his head
         else

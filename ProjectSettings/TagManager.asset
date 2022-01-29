@@ -9,6 +9,8 @@ TagManager:
   - Fish
   - Shark
   - Ink
+  - Task1
+  - Task2
   layers:
   - Default
   - TransparentFX
